@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.DrugDao">
+  
+  <select id="findAll" resultType="entity.Drug">
+  	 select *
+  	  from drug
+  </select>
+   <select id="findForm" resultType="string">
+  	 select distinct form from jbyw
+  </select>
+  <select id="findByCondition"  parameterType="drug" resultType="drug">
+  	 select * from drug
+  	 <where>
+  	 	<if test="name !=null and name != '' ">
+  	 		name like concat('%',#{name},'%')
+  	 	</if>
+  	 	<if test="form !=null">
+  	 		and form like '%'||#{form}||'%'
+  	 	</if>
+  	 </where>
+  </select>
+  
+  <select id="findByName" resultType="drug">
+  		select * from jbyw 
+  		<where>
+  			<if test="list.size() > 0 and list !=null">
+  				name in 
+  				<foreach collection="list" item="drugname" open="(" separator="," close=")">
+  					#{drugname}
+  				</foreach>
+  			</if>
+  		</where>
+  </select>
+  
+    <select id="findByRandom" parameterType="int" resultType="entity.Drug">
+  		select * from (select * from drug order by dbms_random.value) where rownum &lt; #{num} 
+  		
+  </select>
+  
+  <select id="fingDrugName" parameterType="java.lang.String" resultType="entity.Drug">
+  		select distinct name,searchCode from drug 
+  		<where>
+  			<if test="_parameter !=null and _parameter != ''">
+  			    searchcode like concat('%',#{searchCode},'%')
+  			</if>
+  		</where>
+  		
+  </select>
+</mapper>

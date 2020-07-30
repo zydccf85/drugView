@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.CfHeadDao">
+
+  <select id="findAll" resultType="entity.CfHead">
+  	 select * from cfhead
+  </select>
+  
+  <resultMap type="entity.CfHead" id="rm" autoMapping="true" >
+  	<id property="id" column="id" />
+  	<result property="opertime" column="opertime"></result>
+  	<collection property="cfDetail" ofType="entity.CfDetail" autoMapping="true" >
+  		<!-- <id property="id" column="id" /> -->
+  	</collection>
+  </resultMap>
+  
+   <select id="find" parameterType="entity.CfHeadCondition" resultMap="rm">
+  		select *  from  (select * from cfhead 
+  	 <where>
+  	 	<if test="disease !=null">
+  	 		disease like concat('%',#{disease},'%')
+  	 	</if>
+  	 	<if test="beginTime !=null and endTime !=null">
+  	 		and opertime &lt;=  #{endTime} and opertime &gt;= #{beginTime}
+  	 	</if>
+  	 	<if test="patient !=null and patient != '' ">
+  	 		and patient like concat('%',#{patient},'%')
+  	 	</if>
+  	 	<if test="doctor !=null and doctor !=''">
+  	 		and doctor like concat('%',#{doctor},'%')
+  	 	</if>
+  	 </where> ) a , cfdetail b where a.opertime =b.opertime order by a.opertime desc
+		
+		 
+  </select>
+  
+  <!-- <select id="find" parameterType="entity.CfHeadCondition" resultType="entity.CfHead">
+  		select * from cfhead 
+  	 <where>
+  	 	<if test="disease !=null">
+  	 		disease like concat('%',#{disease},'%')
+  	 	</if>
+  	 	<if test="beginTime !=null and endTime !=null">
+  	 		and opertime &lt;=  #{endTime} and opertime &gt;= #{beginTime}
+  	 	</if>
+  	 	<if test="patient !=null and patient != '' ">
+  	 		and patient like concat('%',#{patient},'%')
+  	 	</if>
+  	 	<if test="doctor !=null and doctor !=''">
+  	 		and doctor like concat('%',#{doctor},'%')
+  	 	</if>
+  	 </where>
+  	 order by opertime desc 
+		
+		 
+ </select> -->
+  
+  <select id="findSingle" parameterType="entity.CfHeadCondition" resultType="entity.CfHead">
+ 	 <bind name="bt" value="beginTime+' 00:00:00'"></bind>
+  		<bind name="et" value="endTime+' 23:59:59'"></bind>
+  	select * from cfhead 
+  	 <where>
+  	 	<if test="disease !=null">
+  	 		disease like concat('%',#{disease},'%')
+  	 	</if>
+  	 	<if test="beginTime !=null and endTime !=null">
+  	 		and opertime &lt;=  #{et} and opertime &gt;= #{bt}
+  	 	</if>
+  	 	<if test="patient !=null and patient != '' ">
+  	 		and patient like concat('%',#{patient},'%')
+  	 	</if>
+  	 	<if test="doctor !=null and doctor !=''">
+  	 		and doctor like concat('%',#{doctor},'%')
+  	 	</if>
+  	 </where>
+  </select>
+  
+  <select id="findCftypeTongji" parameterType="entity.CfHeadCondition" resultType="java.util.Map">
+ 	 <bind name="bt" value="beginTime+' 00:00:00'"></bind>
+  		<bind name="et" value="endTime+' 23:59:59'"></bind>
+  	 select cftype,count(cftype) as count from cfhead 
+  	  <where>
+  	 	<if test="disease !=null">
+  	 		disease like concat('%',#{disease},'%')
+  	 	</if>
+  	 	<if test="beginTime !=null and endTime !=null">
+  	 		and opertime &lt;=  #{et} and opertime &gt;= #{bt}
+  	 	</if>
+  	 	<if test="patient !=null and patient != '' ">
+  	 		and patient like concat('%',#{patient},'%')
+  	 	</if>
+  	 	<if test="doctor !=null and doctor !=''">
+  	 		and doctor like concat('%',#{doctor},'%')
+  	 	</if>
+  	 </where>
+  	  group by cftype
+  </select>
+  
+  <select id="findDoctors" resultType="String">
+  	 select distinct doctor from cfhead order by doctor
+  </select>
+  
+</mapper>

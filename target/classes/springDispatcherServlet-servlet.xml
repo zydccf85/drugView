@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+ <context:component-scan base-package="controller,Dao,service,asp" />
+  <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+ <mvc:annotation-driven  />
+<!--  <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> -->
+<!-- 	 <property name="converters"> -->
+<!-- 	 	<set> -->
+<!-- 	 		<bean class="convert.CustomDateConvert" /> -->
+<!-- 	 	</set> -->
+<!--  	</property> -->
+<!--  </bean> -->
+   <util:properties id="dbsource" location="classpath:dbConfig.properties"></util:properties>
+ <bean id="db" class="org.apache.commons.dbcp2.BasicDataSource">
+ <property name="driverClassName" value="#{dbsource.driverClassName}"/>
+ <property name="url" value="#{dbsource.url}"/>
+ <property name="username" value="#{dbsource.username}"/>
+ <property name="password" value="#{dbsource.password}"/>
+ </bean>   
+<bean id="ssfb" class="org.mybatis.spring.SqlSessionFactoryBean">
+	  <property name="plugins">
+	  	<array>
+	  		<bean class="com.github.pagehelper.PageInterceptor">
+	  		<property name="properties">
+          <!--使用下面的方式配置参数，一行配置一个 -->
+          <value>
+            autoRuntimeDialect=true
+          </value>
+        </property>
+	  		</bean>
+	  	</array>
+	  </property>
+	 <property name="dataSource" ref="db"/> 
+	  <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+	  <property name="typeAliasesPackage" value="entity"></property>
+	
+ 	<!--  <property name="configLocation" value="classpath:config/mybatis-config.xml"/>  -->
+</bean>
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<property name="basePackage" value="dao"/>
+</bean>
+ <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 	<property name="prefix" value="/WEB-INF/"/>
+ 	<property name="suffix" value=".jsp"/>
+ </bean>
+ <bean id="multipartResolver" 
+ class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 	<property name="defaultEncoding" value="utf-8"></property>
+ 	<property name="maxUploadSize" value="50000000"></property>
+ </bean>
+ 
+ <mvc:interceptors>
+ 	<mvc:interceptor>
+ 		<mvc:mapping path="/*.do"></mvc:mapping>
+ 		<mvc:exclude-mapping path="/hello.do"/>
+ 		<bean class="interceptors.SessionInterceptor"></bean>
+ 	</mvc:interceptor>
+ </mvc:interceptors>
+ 
+
+
+
+ 
+</beans>

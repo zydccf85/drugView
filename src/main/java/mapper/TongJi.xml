@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.TongJiDao">
+  
+  <select id="getTongJi" parameterType="map" statementType="CALLABLE">
+  	{CALL get_tongji(
+  		#{beginTime,mode=INOUT,jdbcType=VARCHAR},
+  		#{endTime,mode=INOUT,jdbcType=VARCHAR},
+  		#{tongji,mode=OUT,jdbcType=CURSOR,resultMap=resMap}
+  	)}
+  </select>
+  <resultMap type="entity.TongJi" id="resMap">
+  	<result column="rn" jdbcType="INTEGER" javaType="Integer" property="rn"/>
+  	<result column="range" jdbcType="VARCHAR" javaType="String" property="range"/>
+  	<result column="doctor" jdbcType="VARCHAR" javaType="String" property="doctor"/>
+  	<result column="maxprice" jdbcType="DOUBLE"  javaType="Double" property="maxprice"/>
+  	<result column="minprice" jdbcType="DOUBLE" javaType="Double"  property="minprice"/>
+  	<result column="total" jdbcType="INTEGER" javaType="Integer" property="total"/>
+  	<result column="totalprice" jdbcType="DOUBLE" javaType="Double" property="totalprice"/>
+  </resultMap>
+</mapper> 

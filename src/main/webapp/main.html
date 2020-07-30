@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!--  <link href="./mypackage/bootstrap.css" rel="stylesheet" type="text/css">
+ <link href="./mypackage/bootstrapVue.css" rel="stylesheet" type="text/css">
+ <script type="text/javascript" src="./mypackage/vue.js "></script>
+ <script type="text/javascript" src="./mypackage/bootstrapVue.js" /></script> -->
+ 
+ <!-- Load required Bootstrap and BootstrapVue CSS -->
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+<!-- Load polyfills to support older browsers -->
+<script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+
+<!-- Load Vue followed by BootstrapVue -->
+<script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+<!-- Load the following for BootstrapVueIcons support -->
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+</head>
+<body>
+<div id="app">
+	<button class="btn btn-primary">ccf</button>
+	<bbutton variant="primary">primary</bbutton>
+	<h2>Example heading <b-badge>New</b-badge></h2>
+</div>
+<script type="javascript">
+	window.app = new vue({
+	el:'#app',
+	
+});
+</script>
+</body>
+</html>
