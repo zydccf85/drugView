@@ -105,7 +105,7 @@ public class ImportCfServ {
 	 private List<List<CfHead>> splitList(List<CfHead> list , int groupSize){
 	        int length = list.size();
 	        // 计算可以分成多少组
-	        int num = ( length + groupSize - 1 )/groupSize ; // TODO 
+	        int num = ( length + groupSize - 1 )/groupSize ; 
 	        List<List<CfHead>> newList = new ArrayList<>(num);
 	        for (int i = 0; i < num; i++) {
 	            // 开始位置
